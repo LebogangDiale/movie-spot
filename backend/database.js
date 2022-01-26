@@ -11,6 +11,9 @@ module.exports = class Database {
         try {
             this.pool = new Pool({
                 connectionString: connection_string,
+                ssl: {
+                    rejectUnauthorized: false
+                  }
             });
 
 

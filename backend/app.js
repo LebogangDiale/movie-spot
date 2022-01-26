@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const Client = require('pg').Client //const {Client} = require('pg');
+//const Client = require('pg').Client //const {Client} = require('pg');
 
 const userRoutes = require('./api/routes/users.js');
 
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 app.use('/users', userRoutes);
 
 app.use((req, res, next) => {
-    const error = new Error('It is Not found');
+    const error = new Error('Oops Kamogelo is not allowed to use this app!!!!');
     error.status = 404;
     next(error);
 })
