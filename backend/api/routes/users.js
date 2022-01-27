@@ -111,7 +111,7 @@ router.get('/checkEmail/:email', (req, res, next) => {
         if (Array.isArray(params)) {
             params.forEach(() => {
                 placeholder += `$${count},`;
-                count += 1;
+                 count += 1;
             });
         } 
 
@@ -145,6 +145,56 @@ router.get('/checkEmail/:email', (req, res, next) => {
         })
     })
 });
+
+
+//fn_register_with_old_email
+router.get('/reRegister/:email/:password', (req, res, next) => {
+    debugger;
+    return new Promise((resolve, reject) => {
+        let placeholder = '';
+        let count = 1;
+        const params = Object.keys(req.params).map(key => [(key), req.params[key]]);
+
+        const paramsvalues = Object.keys(req.params).map(key => req.params[key]);
+
+        if (Array.isArray(params)) {
+            params.forEach(() => {
+                placeholder += `$${count},`;
+                count += 1;
+            });
+        } 
+
+        placeholder = placeholder.replace(/,\s*$/, ''); 
+
+        const functionName = `moviespot_schema.fn_register_with_old_email`;
+
+        const sql = `${functionName}(${placeholder})`;
+
+        postgres.callFnWithResultsAdd(sql, paramsvalues)
+        .then((data) => {
+            debugger;
+            console.log(data);
+   
+            res.status(201).json({
+                message: ' Reregister api works',
+                reRegister: data
+            });
+            resolve(data);
+
+        })
+        .catch((error) => {
+            debugger;
+            console.log(error);
+            res.status(500).json({
+                message: 'bad Request',
+                error: error,
+                status: false
+            });
+            reject(error);
+        })
+    })
+});
+
 
 //Delete user
 router.patch('/deleteAccount/:email', (req, res, next) => {
