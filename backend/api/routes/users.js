@@ -40,7 +40,7 @@ router.post('/register', (req, res, next) => {
         .catch((error) => {
             console.log(error);
             res.status(500).json({
-                message: 'bad Request',
+                message: error,
                 error: error,
                 status: false
             });
