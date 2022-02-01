@@ -50,14 +50,13 @@ router.post('/register', (req, res, next) => {
 });
 
 //login
-router.get('/login/:email/:password', (req, res, next) => {
-    debugger;
+router.post('/login', (req, res, next) => {
     return new Promise((resolve, reject) => {
         let placeholder = '';
         let count = 1;
-        const params = Object.keys(req.params).map(key => [(key), req.params[key]]);
+        const params = Object.keys(req.body).map(key => [(key), req.body[key]]);
 
-        const paramsvalues = Object.keys(req.params).map(key => req.params[key]);
+        const paramsvalues = Object.keys(req.body).map(key => req.body[key]);
 
         if (Array.isArray(params)) {
             params.forEach(() => {
@@ -68,27 +67,25 @@ router.get('/login/:email/:password', (req, res, next) => {
 
         placeholder = placeholder.replace(/,\s*$/, ''); 
 
-        const functionName = `moviespot_schema.fn_user_login`;
+        const functionName = `moviespot_schema.fn_user_logintest`;
 
         const sql = `${functionName}(${placeholder})`;
 
         postgres.callFnWithResultsAdd(sql, paramsvalues)
         .then((data) => {
-            debugger;
             console.log(data);
    
             res.status(201).json({
-                message: 'Login api run successfully',
+                message: 'Newly Added user',
                 addedUser: data
             });
             resolve(data);
 
         })
         .catch((error) => {
-            debugger;
             console.log(error);
             res.status(500).json({
-                message: 'bad Request',
+                message: error,
                 error: error,
                 status: false
             });
